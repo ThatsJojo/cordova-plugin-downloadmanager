@@ -7,9 +7,19 @@ var exec = require('cordova/exec');
  * @param {string} arg2 description
  * @param {function(string)} success 
  * @param {function(string)} error 
- * @param {{setDestinationInExternalPublicDir:boolean}=} options 
+ * @param {{setDestinationInExternalPublicDir:boolean; useIncomingFileName: Boolean; openAfterDownload: Boolean; openInDefaultApp: Boolean; }=} options 
+ * 
+ * 
+ * 
  */
 exports.download = function(arg0, arg1, arg2, success, error, options) {
+    options = {
+        useIncomingFileName: options.useIncomingFileName ?? false,
+        setDestinationInExternalPublicDir: options.usePublic ?? false,
+        openAfterDownload: options.openAfterDownload ?? false,
+        openInDefaultApp: options.openInDefaultApp ?? false,
+    }
+
     exec(success, error, "DownloadManager", "download", [arg0, arg1, arg2, options]);
 };
 

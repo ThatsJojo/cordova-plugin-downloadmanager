@@ -1,14 +1,14 @@
 {
-  "name": "cordova-plugin-downloadmanager",
-  "version": "0.0.1",
+  "name": "thatsjojo-cordova-plugin-downloadmanager",
+  "version": "0.0.3",
   "description": "A plugin to start system's default download manager.",
   "cordova": {
-    "id": "cordova-plugin-downloadmanager",
+    "id": "thatsjojo-cordova-plugin-downloadmanager",
     "platforms": []
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vasani-arpit/cordova-plugin-downloadmanager.git"
+    "url": "git+https://github.com/ThatsJojo/cordova-plugin-downloadmanager.git"
   },
   "keywords": [
     "ecosystem:cordova"
@@ -16,7 +16,7 @@
   "author": "Arpit Vasani",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager/issues"
+    "url": "https://github.com/ThatsJojo/cordova-plugin-downloadmanager/issues"
   },
-  "homepage": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager#readme"
+  "homepage": "https://github.com/ThatsJojo/cordova-plugin-downloadmanager#readme"
 }

@@ -17,6 +17,7 @@ exports.download = function(arg0, arg1, arg2, success, error, options) {
         useIncomingFileName: options.useIncomingFileName ?? false,
         setDestinationInExternalPublicDir: options.setDestinationInExternalPublicDir ?? false,
         openAfterDownload: options.openAfterDownload ?? false,
+        openInDefaultApp: options.openInDefaultApp ?? false,
     }
 
     exec(success, error, "DownloadManager", "download", [arg0, arg1, arg2, options]);

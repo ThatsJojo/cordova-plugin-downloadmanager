@@ -84,6 +84,7 @@ public class DownloadManager extends CordovaPlugin {
             boolean useIncomingFileName = options.getBoolean("useIncomingFileName");
             boolean usePublic = options.getBoolean("setDestinationInExternalPublicDir");
             boolean openAfterDownload = options.getBoolean("openAfterDownload");
+            boolean openInDefaultApp = options.getBoolean("openInDefaultApp");
             String finalFileName = useIncomingFileName
                     ? URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url))
                     : URLDecoder.decode(fileName,"UTF-8");
@@ -123,14 +124,19 @@ public class DownloadManager extends CordovaPlugin {
                         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), finalFileName);
                         String mime = _getMimeType(file.getName());
                         Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                        newIntent.setDataAndType(Download_Uri, mime);
+                        Uri uri = downloadManager.getUriForDownloadedFile(downloadID);
+                        newIntent.setDataAndType(uri, mime);
                         newIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         
                         if (newIntent.resolveActivity(cordova.getContext().getPackageManager()) != null) {
-                            cordova.getActivity().startActivity(newIntent);
+                            if (openInDefaultApp){
+                                cordova.getActivity().startActivity(newIntent);
+                            } else {
+                                cordova.getActivity().startActivity(Intent.createChooser(newIntent, null));
+                            }
                         }
 
-                        callbackContext.success(Download_Uri.toString());
+                        callbackContext.success(uri.toString());
                     }
                 }
             };

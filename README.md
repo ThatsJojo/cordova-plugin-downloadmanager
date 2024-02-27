@@ -30,7 +30,6 @@ var options = {
   setDestinationInExternalPublicDir: true,  // set true if you want to use public dir instead of files dir
   useIncomingFileName: true,  // set true if you want to use the fileName extracted from the url
   openAfterDownload: true,  // set true if you want to open the in other app after download
-  openInDefaultApp: true,  // set true if you want to open the file in the default app after download (needs openAfterDownload = true)
 }
 cordova.plugins.DownloadManager.download("Your URL to download", "Your file name","Your Description" ,success, fail, options)
 ```

@@ -1,6 +1,6 @@
 {
   "name": "thatsjojo-cordova-plugin-downloadmanager",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A plugin to start system's default download manager.",
   "cordova": {
     "id": "thatsjojo-cordova-plugin-downloadmanager",

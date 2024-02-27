@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
 import android.widget.Toast;
@@ -83,11 +84,9 @@ public class DownloadManager extends CordovaPlugin {
             boolean useIncomingFileName = options.getBoolean("useIncomingFileName");
             boolean usePublic = options.getBoolean("setDestinationInExternalPublicDir");
             boolean openAfterDownload = options.getBoolean("openAfterDownload");
-            boolean openInDefaultApp = options.getBoolean("openInDefaultApp");
             String finalFileName = useIncomingFileName
                     ? URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url))
                     : URLDecoder.decode(fileName,"UTF-8");
-            callbackContext.error("name: " + fileName + "    null:" + (finalFileName == null)  + "    null2:" + (finalFileName == null ? "é null" : "não é null"));
 
             android.app.DownloadManager downloadManager = (android.app.DownloadManager) cordova.getActivity().getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
             Uri Download_Uri = Uri.parse(url);
@@ -119,28 +118,19 @@ public class DownloadManager extends CordovaPlugin {
             BroadcastReceiver onComplete = new BroadcastReceiver() {
                 public void onReceive(Context ctxt, Intent intent) {
                     long referenceId = intent.getLongExtra(android.app.DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                    
                     if (downloadID == referenceId) {
                         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), finalFileName);
-                        Uri uri = Uri.fromFile(file).normalizeScheme();
-
-                        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(finalFileName);
-                        String mime = _getMimeType(finalFileName);
-
-                        callbackContext.success(uri.toString());
-
+                        String mime = _getMimeType(file.getName());
                         Intent newIntent = new Intent(Intent.ACTION_VIEW);
-
-                        Context context = cordova.getActivity().getApplicationContext();
-                        intent.setDataAndType(uri, mime);
-                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-                        if(openInDefaultApp){
-                            cordova.getActivity().startActivity(intent);
-                        }
-                        else{
-                            cordova.getActivity().startActivity(Intent.createChooser(intent, "Open File in..."));
+                        newIntent.setDataAndType(Download_Uri, mime);
+                        newIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        
+                        if (newIntent.resolveActivity(cordova.getContext().getPackageManager()) != null) {
+                            cordova.getActivity().startActivity(newIntent);
                         }
 
+                        callbackContext.success(Download_Uri.toString());
                     }
                 }
             };
